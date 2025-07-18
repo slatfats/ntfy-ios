@@ -215,6 +215,29 @@ class Store: ObservableObject {
         request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "key = %@", key)])
         return try? context.fetch(request).first
     }
+    
+    // MARK: Read / unread status
+    
+    func toggleRead(forNotification notification: Notification) {
+        notification.unread = !notification.unread
+        try? context.save()
+    }
+    
+    func markAsRead(allNotificationsFor subscription: Subscription) {
+        guard let notifications = subscription.notifications else { return }
+        Log.d(Store.tag, "Marking all \(notifications.count) notification(s) for subscription \(subscription.urlString()) as read")
+        do {
+            notifications.forEach { notification in
+                if let notification = notification as? Notification {
+                    notification.unread = false
+                }
+            }
+            try context.save()
+        } catch let error {
+            Log.w(Store.tag, "Cannot mark notifications as read", error)
+            rollbackAndRefresh()
+        }
+    }
 }
 
 extension Store {
