@@ -328,6 +328,9 @@ struct NotificationRowView: View {
             // TODO: This gives no feedback to the user, and it only works if the text is tapped
             UIPasteboard.general.setValue(notification.formatMessage(), forPasteboardType: UTType.plainText.identifier)
         }
+        .background(
+            notification.unread ? Color.accentColor : Color.primary
+        )
     }
 }
 

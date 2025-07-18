@@ -115,6 +115,7 @@
 		94CD1969283E666900973B93 /* EmojiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiManager.swift; sourceTree = "<group>"; };
 		E270080F2AF0F64B006E33BA /* SubscriptionsObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsObservable.swift; sourceTree = "<group>"; };
 		E27008112AF1030A006E33BA /* NotificationsObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsObservable.swift; sourceTree = "<group>"; };
+		FE2A6BD32E2AE531003B622C /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -719,9 +720,10 @@
 		9474F1F52830830700CDE4DD /* ntfy.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				FE2A6BD32E2AE531003B622C /* Model 2.xcdatamodel */,
 				9474F1F62830830700CDE4DD /* Model.xcdatamodel */,
 			);
-			currentVersion = 9474F1F62830830700CDE4DD /* Model.xcdatamodel */;
+			currentVersion = FE2A6BD32E2AE531003B622C /* Model 2.xcdatamodel */;
 			path = ntfy.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
