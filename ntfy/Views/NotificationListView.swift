@@ -2,7 +2,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 enum ActiveAlert {
-    case clear, unsubscribe, selected
+    case clear, unsubscribe, selected, readAll
 }
 
 struct NotificationListView: View {
@@ -149,6 +149,15 @@ struct NotificationListView: View {
                         action: deleteSelected
                     ),
                     secondaryButton: .cancel())
+            case .readAll:
+                return Alert(
+                    title: Text("Mark as read"),
+                    message: Text("Do you really want to mark all of the notifications in this topic as read?"),
+                    primaryButton: .destructive(
+                        Text("Mark as read"),
+                        action: markAsReadAll
+                    ),
+                    secondaryButton: .cancel())
             }
         }
         .overlay(Group {
@@ -230,6 +239,12 @@ struct NotificationListView: View {
             selection = Set<Notification>()
         }
         editMode = .inactive
+    }
+
+    private func markAsReadAll() {
+        DispatchQueue.global(qos: .background).async {
+            store.markAsRead(allNotificationsFor: subscription)
+        }
     }
     
     private func cancelSubscriptionNotifications() {
