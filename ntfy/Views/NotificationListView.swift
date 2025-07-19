@@ -223,6 +223,7 @@ struct NotificationListView: View {
     private func unsubscribe() {
         DispatchQueue.global(qos: .background).async {
             subscriptionManager.unsubscribe(subscription)
+            updateBadgeCount()
         }
         delegate.selectedBaseUrl = nil
     }
@@ -230,6 +231,7 @@ struct NotificationListView: View {
     private func deleteAll() {
         DispatchQueue.global(qos: .background).async {
             store.delete(allNotificationsFor: subscription)
+            updateBadgeCount()
         }
     }
     
@@ -237,6 +239,7 @@ struct NotificationListView: View {
         DispatchQueue.global(qos: .background).async {
             store.delete(notifications: selection)
             selection = Set<Notification>()
+            updateBadgeCount()
         }
         editMode = .inactive
     }
@@ -244,6 +247,7 @@ struct NotificationListView: View {
     private func markAsReadAll() {
         DispatchQueue.global(qos: .background).async {
             store.markAsRead(allNotificationsFor: subscription)
+            updateBadgeCount()
         }
     }
     
@@ -265,6 +269,14 @@ struct NotificationListView: View {
                 Log.d(tag, "Cancelling \(ids.count) notification(s) from notification center")
                 notificationCenter.removeDeliveredNotifications(withIdentifiers: ids)
             }
+        }
+    }
+    
+    private func updateBadgeCount() {
+        if #available(iOS 16.0, *) {
+            UNUserNotificationCenter.current().setBadgeCount(store.totalUnreadNotificationCount)
+        } else {
+            UIApplication.shared.applicationIconBadgeNumber = store.totalUnreadNotificationCount
         }
     }
 }
@@ -345,15 +357,24 @@ struct NotificationRowView: View {
                                 .cornerRadius(10)
                             }
                         }
-                    }
+                    }.padding([.top], 5)
                 }
-            }.padding([.top], 5)
+            }
         }
         .padding(.all, 4)
         .onTapGesture {
             // TODO: This gives no feedback to the user, and it only works if the text is tapped
             UIPasteboard.general.setValue(notification.formatMessage(), forPasteboardType: UTType.plainText.identifier)
             store.toggleRead(forNotification: notification)
+            updateBadgeCount()
+        }
+    }
+    
+    private func updateBadgeCount() {
+        if #available(iOS 16.0, *) {
+            UNUserNotificationCenter.current().setBadgeCount(store.totalUnreadNotificationCount)
+        } else {
+            UIApplication.shared.applicationIconBadgeNumber = store.totalUnreadNotificationCount
         }
     }
 }

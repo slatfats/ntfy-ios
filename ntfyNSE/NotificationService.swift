@@ -62,6 +62,7 @@ class NotificationService: UNNotificationServiceExtension {
             return
         }
         Store.shared.save(notificationFromMessage: message, withSubscription: subscription)
+        content.badge = (store?.totalUnreadNotificationCount ?? 0) as NSNumber
         contentHandler(content)
     }
     

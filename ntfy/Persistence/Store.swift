@@ -119,6 +119,7 @@ class Store: ObservableObject {
             notification.actions = Actions.shared.encode(message.actions)
             notification.click = message.click ?? ""
             notification.subscription = subscription
+            notification.unread = true
             subscription.addToNotifications(notification)
             subscription.lastNotificationId = message.id
             Log.d(Store.tag, "Storing notification with ID \(notification.id ?? "<unknown>")")
@@ -237,6 +238,16 @@ class Store: ObservableObject {
             Log.w(Store.tag, "Cannot mark notifications as read", error)
             rollbackAndRefresh()
         }
+    }
+    
+    var totalUnreadNotificationCount: Int {
+        var count: Int = 0
+        if let subscriptions = getSubscriptions() {
+            for subscription in subscriptions {
+                count += subscription.unreadNotificationCount()
+            }
+        }
+        return count
     }
 }
 
